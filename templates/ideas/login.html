@@ -1,0 +1,51 @@
+<!-- templates/ideas/login.html -->
+{% extends 'ideas/base.html' %}
+{% block title %}Login - Innovation Idea Tracker{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-box-arrow-in-right"></i> Login</h3>
+      </div>
+      <div class="card-body p-4">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+          {{ error }}
+          {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input
+              type="text"
+              name="username"
+              value="{{ form.username.value|default:'' }}"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <hr />
+        <p class="text-center mb-0">
+          Don't have an account?
+          <a href="{% url 'register' %}">Register here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

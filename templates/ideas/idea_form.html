@@ -1,0 +1,53 @@
+{% extends 'ideas/base.html' %}
+{% block title %}{% if idea %}Edit Idea{% else %}Submit Idea{% endif %} - Innovation Tracker{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">
+          {% if idea %}
+          <i class="bi bi-pencil"></i> Edit Idea
+          {% else %}
+          <i class="bi bi-plus-circle"></i> Submit New Idea
+          {% endif %}
+        </h3>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+          </div>
+          {% endif %}
+          {% for field in form %}
+          {% if field.name == 'new_category_name' %}
+          <hr />
+          <h5 class="mt-4">Can't find the right category?</h5>
+          <p class="text-muted">Add a new category below and we'll save it for everyone.</p>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+            {% if field.errors %}
+            <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+              {% if idea %}Update Idea{% else %}Submit Idea{% endif %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

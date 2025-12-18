@@ -1,0 +1,34 @@
+{% extends 'ideas/base.html' %}
+{% block title %}My Ideas - Innovation Tracker{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>My Submitted Ideas</h2>
+  <a href="{% url 'submit_idea' %}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> New Idea</a>
+</div>
+
+{% if ideas %}
+<div class="list-group">
+  {% for idea in ideas %}
+  <a href="{% url 'idea_detail' idea.pk %}" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ idea.title }}</h5>
+      <small class="text-capitalize">{{ idea.get_status_display }}</small>
+    </div>
+    <p class="mb-1 text-muted">{{ idea.description|truncatewords:25 }}</p>
+    <small>
+      {{ idea.submission_date|date:"M j, Y" }}
+      {% if idea.category %}· {{ idea.category.name }}{% endif %}
+      · Score: {{ idea.vote_score }}
+    </small>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-white-50 py-5">
+  <i class="bi bi-archive display-3"></i>
+  <p class="lead mt-3">You haven't submitted any ideas yet.</p>
+  <a href="{% url 'submit_idea' %}" class="btn btn-outline-light"><i class="bi bi-plus-circle"></i> Submit your first idea</a>
+ </div>
+{% endif %}
+{% endblock %}
+
